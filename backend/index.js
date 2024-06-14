@@ -1,9 +1,13 @@
 import express from 'express'
 import dotenv from 'dotenv'
 dotenv.config()
+// import datababse
+import { dbConnection } from './config/database.js'
 
 const app = express()
 
+
+dbConnection()
 
 // test api 
 app.get('/api', (req, res) => {
