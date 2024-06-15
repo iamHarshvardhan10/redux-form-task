@@ -1,12 +1,12 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SingUp = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
-  const [error, setError ] = useState(false);
-  const navigate = useNavigate()
+  const [error, setError] = useState(false);
+  const navigate = useNavigate();
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -26,15 +26,15 @@ const SingUp = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      
+
       if (!res.ok) {
         // If the server responded with a status code outside the range [200, 299]
         throw new Error(data.message || "Something went wrong");
       }
-      
+
       setLoading(false);
-      navigate('/sign-in')
-      console.log(data);
+      navigate("/sign-in");
+     
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -106,9 +106,7 @@ const SingUp = () => {
               onChange={handleChange}
             />
           </div>
-          <button
-            className="w-full border mt-4 h-10 bg-transparent text-gray-900 border-black text-lg  font-semibold uppercase rounded-md hover:bg-black hover:text-white hover::border-gray-800"
-          >
+          <button className="w-full border mt-4 h-10 bg-transparent text-gray-900 border-black text-lg  font-semibold uppercase rounded-md hover:bg-black hover:text-white hover::border-gray-800">
             {loading ? "loading" : "Sign Up"}
           </button>
           {error && <p>{error}</p>}

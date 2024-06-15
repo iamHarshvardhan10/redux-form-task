@@ -1,12 +1,13 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { signInSuccess } from "../redux/userSlice/userSlice";
 const SingIn = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
-  const [error, setError ] = useState(false);
-  const navigate = useNavigate()
+  const [error, setError] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -26,15 +27,15 @@ const SingIn = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      
+
       if (!res.ok) {
         // If the server responded with a status code outside the range [200, 299]
         throw new Error(data.message || "Something went wrong");
       }
-      
+
       setLoading(false);
-      navigate('/profile')
-      console.log(data);
+      navigate("/profile");
+      dispatch(signInSuccess(data));
     } catch (error) {
       setLoading(false);
       setError(error.message);
@@ -46,7 +47,6 @@ const SingIn = () => {
     <div className="flex items-center justify-center h-[80vh] w-full">
       <form onSubmit={handleSubmit}>
         <div className="border-black border-r-4 border-b-4 rounded-xl bg-yellow-200 px-10 py-10 bg-transparent">
-          
           <div className="flex flex-col item-center">
             <label
               htmlFor="email"
@@ -77,9 +77,7 @@ const SingIn = () => {
               onChange={handleChange}
             />
           </div>
-          <button
-            className="w-full border mt-4 h-10 bg-transparent text-gray-900 border-black text-lg  font-semibold uppercase rounded-md hover:bg-black hover:text-white hover::border-gray-800"
-          >
+          <button className="w-full border mt-4 h-10 bg-transparent text-gray-900 border-black text-lg  font-semibold uppercase rounded-md hover:bg-black hover:text-white hover::border-gray-800">
             {loading ? "loading" : "Sign In"}
           </button>
           {error && <p className="text-red-700">{error}</p>}
